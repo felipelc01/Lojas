@@ -10,7 +10,7 @@ let veiculoEditando = null;
 const supabaseUrl = "https://zzxdflwqwhqekkyfoutb.supabase.co";
 const supabaseKey = "sb_publishable_Lb3SL1KzrIc7pLPq1McVkw_YeLty3YH";
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 function renderizar(lista = veiculos) {
     const el = document.getElementById("estoque");
@@ -31,7 +31,7 @@ function renderizar(lista = veiculos) {
 }
 
 async function carregarVeiculos() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from("veiculos")
         .select("*");
 
@@ -80,7 +80,7 @@ async function salvarVeiculo() {
                 return;
             }
 
-            const { error } = await supabase
+            const { error } = await supabaseClient
                 .from("veiculos")
                 .update(dados)
                 .eq("id", veiculoEditando.id);
@@ -93,7 +93,7 @@ async function salvarVeiculo() {
 
         } else {
 
-            const { error } = await supabase
+            const { error } = await supabaseClient
                 .from("veiculos")
                 .insert([dados]);
 
@@ -319,7 +319,7 @@ async function uploadImagem(file) {
 
     const nomeArquivo = Date.now() + "_" + file.name;
 
-    const { data, error } = await supabase.storage
+    const { data, error } = await supabaseClient.storage
         .from("veiculos")
         .upload(nomeArquivo, file);
 
@@ -328,7 +328,7 @@ async function uploadImagem(file) {
         return null;
     }
 
-    const { data: urlData } = supabase.storage
+    const { data: urlData } = supabaseClient.storage
         .from("veiculos")
         .getPublicUrl(nomeArquivo);
 
