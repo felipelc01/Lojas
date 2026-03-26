@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>AutoStore</title>
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- ⚠️ Supabase (carrega antes de tudo) -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 
 <body class="bg-slate-950 text-white">
@@ -37,12 +38,10 @@
                 <button onclick="buscar()" class="bg-blue-600 px-4 rounded">Buscar</button>
             </div>
         </div>
-
     </section>
 
     <!-- FILTROS -->
     <div class="flex justify-center my-6">
-
         <div class="bg-slate-900 p-2 rounded-full flex gap-2 shadow-lg">
 
             <button onclick="filtrarTipo('todos', this)"
@@ -50,91 +49,74 @@
                 🚀 Todos
             </button>
 
-            <button onclick="filtrarTipo('carro', this)" class="filtro-btn bg-slate-800 px-4 py-2 rounded-full text-sm">
+            <button onclick="filtrarTipo('carro', this)"
+                class="filtro-btn bg-slate-800 px-4 py-2 rounded-full text-sm">
                 🚗 Carros
             </button>
 
-            <button onclick="filtrarTipo('moto', this)" class="filtro-btn bg-slate-800 px-4 py-2 rounded-full text-sm">
+            <button onclick="filtrarTipo('moto', this)"
+                class="filtro-btn bg-slate-800 px-4 py-2 rounded-full text-sm">
                 🏍️ Motos
             </button>
 
         </div>
-
     </div>
 
     <!-- ESTOQUE -->
-    <section class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" id="estoque"></section>
+    <section id="estoque"
+        class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></section>
 
     <!-- ADMIN -->
     <section id="admin" class="hidden p-6 mt-6">
-
         <div class="max-w-4xl mx-auto bg-slate-900 p-6 rounded-2xl shadow-lg">
 
             <h2 class="text-2xl font-bold mb-6">Adicionar Veículo</h2>
 
-
             <div class="mb-6">
-
                 <h3 class="text-lg font-semibold mb-2">Editar Anúncio</h3>
 
-                <select id="listaVeiculos" onchange="selecionarVeiculo()" class="w-full p-3 rounded bg-slate-800">
-
+                <select id="listaVeiculos" onchange="selecionarVeiculo()"
+                    class="w-full p-3 rounded bg-slate-800">
                     <option value="">Selecione um veículo</option>
-
                 </select>
-
             </div>
 
-            <!-- GRID -->
             <div class="grid md:grid-cols-2 gap-4">
-
                 <input id="nome" placeholder="Nome do veículo" class="p-3 rounded bg-slate-800">
-
                 <input id="preco" placeholder="Preço" class="p-3 rounded bg-slate-800">
 
                 <select id="tipo" class="p-3 rounded bg-slate-800">
                     <option value="carro">Carro</option>
                     <option value="moto">Moto</option>
                 </select>
-
             </div>
 
-            <!-- DESCRIÇÃO -->
             <textarea id="descricao" placeholder="Descrição detalhada"
                 class="mt-4 w-full p-3 rounded bg-slate-800 h-28"></textarea>
 
-            <!-- INFORMAÇÕES -->
             <textarea id="info" placeholder="Informações (uma por linha)"
                 class="mt-4 w-full p-3 rounded bg-slate-800 h-28"></textarea>
 
-            <!-- TAGS -->
-            <input id="tags" placeholder="Tags (separadas por vírgula)" class="mt-4 w-full p-3 rounded bg-slate-800">
+            <input id="tags" placeholder="Tags (separadas por vírgula)"
+                class="mt-4 w-full p-3 rounded bg-slate-800">
 
             <!-- UPLOAD -->
             <div class="mt-6">
-
                 <h3 class="mb-2 font-semibold">Imagens do veículo</h3>
 
                 <label
                     class="block border-2 border-dashed border-slate-700 p-6 text-center rounded-xl cursor-pointer hover:bg-slate-800 transition">
 
                     📁 Clique para selecionar imagens
-
                     <input type="file" id="uploadImagens" multiple accept="image/*" class="hidden">
-
                 </label>
 
-                <!-- PREVIEW -->
                 <div id="preview" class="grid grid-cols-3 gap-3 mt-4"></div>
-
             </div>
 
-            <!-- BOTÃO -->
             <button onclick="salvarVeiculo()" id="btnSalvar"
                 class="mt-6 w-full bg-green-600 p-3 rounded-xl font-semibold">
-
                 Publicar Veículo
-
             </button>
 
             <!-- USUÁRIOS -->
@@ -144,30 +126,30 @@
             </div>
 
         </div>
-
     </section>
 
     <!-- LOGIN -->
-    <div id="loginModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
+    <div id="loginModal"
+        class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
 
         <div class="bg-slate-900 p-6 rounded w-80">
             <h3 class="mb-3">Login</h3>
 
-            <input id="user" placeholder="Usuário" class="p-2 w-full mb-2 text-black">
-            <input id="pass" type="password" placeholder="Senha" class="p-2 w-full mb-3 text-black">
+            <input id="user" placeholder="Usuário"
+                class="p-2 w-full mb-2 text-black">
 
-            <button onclick="login()" class="bg-blue-600 w-full p-2 rounded">Entrar</button>
+            <input id="pass" type="password" placeholder="Senha"
+                class="p-2 w-full mb-3 text-black">
+
+            <button onclick="login()"
+                class="bg-blue-600 w-full p-2 rounded">
+                Entrar
+            </button>
         </div>
-
     </div>
 
-    <script>
-        window.SUPABASE_URL = "https://zzxdflwqwhqekkyfoutb.supabase.co";
-        window.SUPABASE_KEY = "sb_publishable_Lb3SL1KzrIc7pLPq1McVkw_YeLty3YH";
-    </script>
-
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <!-- ⚠️ SCRIPT PRINCIPAL (por último) -->
     <script src="script.js"></script>
-</body>
 
+</body>
 </html>
