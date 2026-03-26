@@ -11,8 +11,8 @@ const supabaseUrl = "https://zzxdflwqwhqekkyfoutb.supabase.co";
 const supabaseKey = "sb_publishable_Lb3SL1KzrIc7pLPq1McVkw_YeLty3YH";
 
 const supabaseClient = window.supabase.createClient(
-    "https://zzxdflwqwhqekkyfoutb.supabase.co",
-    "sb_publishable_Lb3SL1KzrIc7pLPq1McVkw_YeLty3YH"
+    window.SUPABASE_URL,
+    window.SUPABASE_KEY
 );
 
 function renderizar(lista = veiculos) {
