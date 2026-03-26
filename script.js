@@ -48,6 +48,20 @@ async function carregarVeiculos() {
     carregarListaVeiculos();
 }
 
+async function carregarUsuarios() {
+    const { data, error } = await supabaseClient
+        .from("usuarios")
+        .select("*");
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    usuarios = data;
+    listarUsuarios();
+}
+
 function abrirCarro(id) {
     localStorage.setItem("carroSelecionado", id);
     window.location.href = "carro.html";
@@ -341,3 +355,4 @@ async function uploadImagem(file) {
 /* INIT */
 carregarVeiculos();
 verificarPermissao();
+carregarUsuarios();
