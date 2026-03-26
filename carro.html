@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Detalhes do Veículo</title>
+
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<title>Detalhes do Veículo</title>
+<!-- ✅ Supabase (OBRIGATÓRIO antes do JS) -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 </head>
 
 <body class="bg-slate-950 text-white">
 
 <!-- HEADER -->
-<header class="p-4 bg-slate-900 flex justify-between">
-    <button onclick="voltar()" class="bg-slate-700 px-4 py-2 rounded">
+<header class="p-4 bg-slate-900 flex justify-between items-center">
+    <button onclick="voltar()" class="bg-slate-700 px-4 py-2 rounded hover:bg-slate-600">
         ← Voltar
     </button>
 
-    <h1 class="font-bold">AutoStore</h1>
+    <h1 class="font-bold text-lg">🚗 AutoStore</h1>
 </header>
 
 <!-- CONTEÚDO -->
-<div id="carro" class="max-w-6xl mx-auto p-4"></div>
+<div id="carro" class="max-w-6xl mx-auto p-4">
+    <!-- loading inicial -->
+    <p class="text-center opacity-60 mt-10">Carregando veículo...</p>
+</div>
 
+<!-- SCRIPT SEMPRE POR ÚLTIMO -->
 <script src="carro.js"></script>
+
 </body>
 </html>
